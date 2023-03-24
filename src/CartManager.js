@@ -3,7 +3,7 @@ import ProductManager from './ProductManager.js'
 
 
 export default class CartManager {
-    contructor(path){
+    constructor(path){
         this.carts;
         this.path = path;
         this.products = [];

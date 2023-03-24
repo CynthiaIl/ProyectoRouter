@@ -1,5 +1,5 @@
 export default class Product {
-    constructor(id, title, description, price, thumbnail, doce, stock) {
+    constructor({ id, title, description, price, thumbnail, doce, stock }) {
 
         if (!id) throw new Error ('falta argumento1')
         if (!title) throw new Error ('falta argumento2')

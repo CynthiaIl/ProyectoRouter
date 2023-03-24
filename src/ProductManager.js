@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import Product from './Product.js'
 
 export default class ProductManager {
-    contructor(path){
+    constructor(path){
         this.path = path;
         this.products = [];
     }
@@ -37,7 +37,7 @@ export default class ProductManager {
         
         const product = this.products.find((prod) => prod.id === id);
         if (!product){
-        throw new Error ('el producto no existe');
+        throw new Error ('Product no exist');
         }
         return product
     }        

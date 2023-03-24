@@ -47,10 +47,10 @@ apiProduct.get('/:pid', async (req,res, next) => {
 apiProduct.post('/', async (req,res,next) => {
     try {
         const product = new Product({
-            id : randomUUID,
+            id : randomUUID(),
             ... req.body
         })
-        const addIt = await npM.persistProducts(product)
+        const addIt = await npM.addProduct(product)
         res.json(addIt)
     } catch (error) {
         next (error)
@@ -58,7 +58,6 @@ apiProduct.post('/', async (req,res,next) => {
 })
 
 apiProduct.put ('/:pid', async (req,res, next) => {
-    let updateProduct
     try {
         updateProduct = new Product ({
             id : req.params.pid,
