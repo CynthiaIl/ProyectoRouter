@@ -57,16 +57,18 @@ apiProduct.post('/', async (req,res,next) => {
     }
 })
 
-apiProduct.put ('/:pid', async (req,res, next) => {
+apiProduct.put('/:pid',async ( req,res, next)=>{
     try {
-        updateProduct = new Product ({
-            id : req.params.pid,
-            ... req.body
-        })
+        const id= req.params.pid
+        const prodUpdate = req.body
+    
+        await npM.updateProduct(id,prodUpdate)
+    
+        res.send('Product update')
     } catch (error) {
-        return next(error) 
+        return next (error)
     }
-})
+    } )
 
 apiProduct.delete ('/:pid', async (req,res, next) => {
     try {

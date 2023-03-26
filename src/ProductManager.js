@@ -19,7 +19,7 @@ export default class ProductManager {
     async addProduct(newProduct){
         await this.loadProducts();
 
-        const product = this.products.find((prod) => prod.code ===newProduct.code);
+        const product = this.products.find((prod) => prod.id ===newProduct.id);
         if (product){
             throw new Error('el producto existe');
         }
@@ -42,24 +42,30 @@ export default class ProductManager {
         return product
     }        
     
-    async updateProduct(id, campos){
-        if (Object.hasOwn(campos,'id')){
-            delete campos.id;
-        }
-        
-        await this.loadProduts();
-        
+    async updateProduct(id, prodModificado) {
+
+        await this.loadProducts();
+
         const product = this.products.find((prod) => prod.id === id);
-        if (!product){
-            throw new Error ('el id no existe');
+        const indice = this.products.findIndex(p => p.id === id)
+
+        if (!product) {
+            throw new Error("ID no exist");
         }
-        
-        const newProduct = new Product({ ...product, ...campos})
-        const indice = this.products.findIndex(p =>p.id===id)
-        this.products[indice] = newProduct
-        
-        await this.persistProducts()
-        }          
+
+        const nuevoProducto = new Product({
+            ...product,
+            ...prodModificado
+        })
+        nuevoProducto.id = id
+        this.products[indice] = nuevoProducto
+
+        const jsonProductsModif = JSON.stringify(this.products, null, 2)
+
+        console.log("Product update YAY", nuevoProducto);
+        await fs.writeFile(this.path, jsonProductsModif)
+    }        
+
 
     async deteleProduct(id){
         await this.loadProducts();
