@@ -1,8 +1,8 @@
 import express, { Router } from 'express'
 import fs from 'fs/promises'
-import ProductManager from '../ProductManager.js'
+import ProductManager from '../controllers/ProductManager.js'
 import { randomUUID } from 'crypto'
-import Product from '../Product.js'
+import Product from '../controllers/Product.js'
 
 export const apiProduct = Router()
 

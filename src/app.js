@@ -1,17 +1,32 @@
-import express from 'express'
-import { apiCartProduct } from '../src/Router/apiCartProduct.js'
-import { apiProduct } from '../src/Router/apiProducts.js'
+import express from 'express';
+import { apiCartProduct } from '../src/Router/apiCartProduct.js';
+import { apiProduct } from '../src/Router/apiProducts.js';
+import { engine } from 'express-handlebars';
+import * as path from 'path';
+import __dirname from './utils.js';
+import ProductManager from './controllers/ProductManager.js';
 
 const PORT = 8080
-const app = express()
+const app = express();
+const product = new ProductManager();
 
-app.get('/', (req,res)=>{
+//Handlebars
+app.engine('handlebars', engine());
+app.set('view engine','handlebars');
+app.set('views', path.resolve(__dirname +'/views'));
 
-    res.send(`<h1>Server ON</h1>`)
-    
+// Static
+app.use(express.static(__dirname +'/public'));
+
+app.get('/', async (req,res)=>{
+    let allproducts = await product.getProducts(req.params);
+    res.render('home',{
+        title : 'All Products | Express',
+        products : allproducts
+    })
     })
     
-    
+// Rutas a api
     app.use('/api/products', apiProduct)
     app.use('/api/carts', apiCartProduct)
     
@@ -27,4 +42,9 @@ app.get('/', (req,res)=>{
     
     })
 
-const server = app.listen(PORT,()=> console.log(`Toy arriba http://localhost:${PORT}`))
+
+// ON server
+app.listen(PORT,()=> 
+    {console.log(`Toy arriba http://localhost:${PORT}`);
+});
+
